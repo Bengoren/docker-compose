@@ -1,13 +1,12 @@
 version: 3.8
 
-sevices:
+services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
       container_name: multistage-food
-    ports:
-      - "5000:5000"
+  # no port because only reached via nginx
   nginx:
     image: nginx:latest
     container_name: nginx-reverse-proxy
