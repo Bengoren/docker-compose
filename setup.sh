@@ -6,21 +6,32 @@ echo ""
 
 # Step 1: Build the image to generate static files
 echo "Building Flask image (this generates static files)..."
-docker build -t foodtrucks-builder --target builder .
+docker build -t foodtrucks-builder --target builder --no-cache .
 
-# Step 2: Extract static files from builder
+# Step 2: Extract static files from builder with correct structure
 echo "Extracting static files..."
 rm -rf static-dist
 mkdir -p static-dist
+
 docker create --name temp-extract foodtrucks-builder
-docker cp temp-extract:/app/static/. static-dist/
-docker cp temp-extract:/app/templates/index.html static-dist/
+docker cp temp-extract:/app/static static-dist/static
+docker cp temp-extract:/app/templates/index.html static-dist/index.html
 docker rm temp-extract
 
+# Step 3: Fix permissions
+echo "Setting correct permissions..."
+chmod -R 755 static-dist/
+
 echo ""
-echo "✓ Static files extracted to ./static-dist/"
+echo "✓ Static files extracted. Structure:"
+ls -la static-dist/
 echo ""
-echo "Now starting all services..."
+echo "Static subdirectory:"
+ls -la static-dist/static/
+
+echo ""
+echo "Starting all services..."
+docker-compose down
 docker-compose up -d
 
 echo ""
