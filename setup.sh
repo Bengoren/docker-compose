@@ -22,13 +22,7 @@ docker rm temp-extract
 echo "Setting correct permissions..."
 chmod -R 755 static-dist/
 
-echo ""
-echo "✓ Static files extracted. Structure:"
-ls -la static-dist/
-echo ""
-echo "Static subdirectory:"
-ls -la static-dist/static/
-
+# Step 4: Start services with docker-compose
 echo ""
 echo "Starting all services..."
 docker-compose down

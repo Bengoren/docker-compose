@@ -1,7 +1,9 @@
 FROM alpine:3.11 AS builder
 WORKDIR /app
+
 #Copy dependencies files 
 COPY foodtrucks/project/flask-app /app
+
 #build dependencies
 RUN apk add --no-cache nodejs npm  && \
     npm install && \
